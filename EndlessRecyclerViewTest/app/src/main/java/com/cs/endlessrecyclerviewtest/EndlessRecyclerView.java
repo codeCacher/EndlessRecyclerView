@@ -90,9 +90,7 @@ public class EndlessRecyclerView extends LinearLayout {
             @Override
             public void run() {
                 setDropDownRefreshState(false);
-                mAdapter.showFootItem();
                 mAdapter.setFootViewSuccess();
-                mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -113,7 +111,6 @@ public class EndlessRecyclerView extends LinearLayout {
             public void run() {
                 mIsRefreshing = false;
                 mAdapter.setFootViewSuccess();
-                mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -128,8 +125,30 @@ public class EndlessRecyclerView extends LinearLayout {
         });
     }
 
+    public void finishPullUpRefreshOnNoMoreData(Activity activity) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mIsRefreshing = false;
+                mAdapter.hideFootItem();
+            }
+        });
+    }
+
     public void addOnScrollListener(RecyclerView.OnScrollListener onScrollListener){
         rv_recycle.addOnScrollListener(onScrollListener);
+    }
+
+    public int getScrollState() {
+        return rv_recycle.getScrollState();
+    }
+
+    public RecyclerView.LayoutManager getLayoutManager() {
+        return rv_recycle.getLayoutManager();
+    }
+
+    public void removeOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
+        rv_recycle.removeOnScrollListener(onScrollListener);
     }
 
     /**
