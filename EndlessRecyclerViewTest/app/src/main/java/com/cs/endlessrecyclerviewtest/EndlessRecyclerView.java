@@ -100,7 +100,7 @@ public class EndlessRecyclerView extends LinearLayout {
             @Override
             public void run() {
                 setDropDownRefreshState(false);
-                mAdapter.hideFootItem();
+                mAdapter.setFootViewFail();
             }
         });
     }
