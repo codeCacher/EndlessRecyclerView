@@ -24,9 +24,6 @@ public abstract class EndlessRecyclerViewAdapter<VH extends EndlessRecyclerViewH
 
     private Context context;
 
-    private View mFootView;
-    private ImageView iv_loading;
-    private TextView tv_foot_text;
     private int mFootViewState;
 
     public abstract int getEndlessItemCount();
@@ -75,19 +72,6 @@ public abstract class EndlessRecyclerViewAdapter<VH extends EndlessRecyclerViewH
         this.notifyDataSetChanged();
     }
 
-    /**
-     * find the foot item view and bound the view
-     *
-     * @param holder
-     */
-    private void BoundFootView(VH holder) {
-        if (mFootView == null) {
-            mFootView = holder.itemView;
-            iv_loading = holder.iv_loading;
-            tv_foot_text = holder.tv_foot_text;
-        }
-    }
-
     @Override
     public int getItemViewType(int position) {
         if (position == getEndlessItemCount()) {
@@ -113,27 +97,26 @@ public abstract class EndlessRecyclerViewAdapter<VH extends EndlessRecyclerViewH
     public void onBindViewHolder(VH holder, int position) {
         int itemViewType = getItemViewType(position);
         if (itemViewType == FOOT_ITEM) {
-            BoundFootView(holder);
             switch (mFootViewState) {
                 case FOOT_ITEM_GONE:
-                    mFootView.setVisibility(View.GONE);
+                    holder.itemView.setVisibility(View.GONE);
                     break;
                 case FOOT_ITEM_LOADING:
-                    mFootView.setVisibility(View.VISIBLE);
+                    holder.itemView.setVisibility(View.VISIBLE);
                     AnimationDrawable background = (AnimationDrawable) holder.iv_loading.getDrawable();
                     background.start();
-                    iv_loading.setVisibility(View.VISIBLE);
-                    tv_foot_text.setText("加载中....");
+                    holder.iv_loading.setVisibility(View.VISIBLE);
+                    holder. tv_foot_text.setText("加载中....");
                     break;
                 case FOOT_ITEM_FAIL:
-                    mFootView.setVisibility(View.VISIBLE);
-                    iv_loading.setVisibility(View.GONE);
-                    tv_foot_text.setText("还没有联网哦，去设置网络吧");
+                    holder.itemView.setVisibility(View.VISIBLE);
+                    holder.iv_loading.setVisibility(View.GONE);
+                    holder.tv_foot_text.setText("还没有联网哦，去设置网络吧");
                     break;
                 case FOOT_ITEM_MORE:
-                    mFootView.setVisibility(View.VISIBLE);
-                    iv_loading.setVisibility(View.GONE);
-                    tv_foot_text.setText("更多...");
+                    holder.itemView.setVisibility(View.VISIBLE);
+                    holder.iv_loading.setVisibility(View.GONE);
+                    holder.tv_foot_text.setText("更多...");
                     break;
             }
         } else {
